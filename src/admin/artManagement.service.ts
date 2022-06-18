@@ -11,22 +11,14 @@ export class ArtManagementService {
         private artManagementRepository: ArtManagementRepository,
     ){}
 
+    // 작품 리스트 조회
+    async getArts(): Promise <Art[]> {
+        return await this.artManagementRepository.find();
+    }
+
     // 작품 업로드
     async uploadArt(artManagementDto: ArtManagementDto): Promise<Art> {
-        const {title, category, artist, date, description, thumbnail} = artManagementDto;
-
-        const art = this.artManagementRepository.create({
-            title,
-            category, 
-            artist,
-            date,
-            description,
-            thumbnail
-        })
-
-        await this.artManagementRepository.save(art);
-
-        return art;
+        return this.artManagementRepository.uploadArt(artManagementDto);
     }
 
     // 개별 작품 조회
@@ -38,21 +30,6 @@ export class ArtManagementService {
         }
 
         return found;
-    }
-
-    // 작품 리스트 조회
-    getList() {
-        return "return arts list.";
-    }
-
-    // 작품 업로드
-    fileUpload() {
-        return `upload file.`;
-    }
-
-    // 작품 조회
-    getFile(id: number) {
-        return `return file #${id}.`;
     }
 
     // 작품 수정

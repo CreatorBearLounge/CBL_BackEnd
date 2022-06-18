@@ -4,17 +4,20 @@ import { Art } from "./entities/artManagement.entity";
 
 @EntityRepository(Art)
 export class ArtManagementRepository extends Repository<Art> {
-    async createBoard(artManagementDto: ArtManagementDto): Promise<Art> {
-        const {title, category, artist, date, description} = artManagementDto;
+    async uploadArt(artManagementDto: ArtManagementDto): Promise<Art> {
+        const {title, category, artist, date, description, thumbnail} = artManagementDto;
 
-        const board = this.create({
+        const art = this.create({
             title,
             category, 
             artist,
+            date,
             description,
+            thumbnail
         })
 
-        await this.save(board); // db에 저장. typeorm 메소드
-        return board;
-    };
+        await this.save(art);
+
+        return art;
+    }
 }

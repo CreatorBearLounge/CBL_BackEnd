@@ -10,15 +10,14 @@ export class ArtManagementController {
 
     // 작품 관리 메인 페이지 - 전체 작품 리스트 조회
     @Get('/files')
-    getList(): string {
-        return this.artManagementService.getList();
+    getList(): Promise <Art[]> {
+        return this.artManagementService.getArts();
     }
 
     // 작품 업로드 페이지
     @Post('/files/upload')
     @FormDataRequest()
     uploadArt(@Body() artManagementDto: ArtManagementDto): Promise<Art> {
-        // const upload,  = {}
         return this.artManagementService.uploadArt(artManagementDto);
     }
 
