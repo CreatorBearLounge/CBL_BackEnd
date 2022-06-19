@@ -38,16 +38,16 @@ export class ArtManagementController {
     @Patch('/arts/:id')
     @ApiOperation({ summary: '개별 작품 수정 API', description: '개별 작품 수정' })
     @ApiCreatedResponse({ description: '개별 작품 수정', type: Art })
-    updateFile(@Param('id') id: number): string {
-        return this.artManagementService.updateArt(id);
+    @FormDataRequest()
+    updateArt(@Param('id') id: number, @Body() artManagementDto: ArtManagementDto): Promise<Art> {
+        return this.artManagementService.updateArt(id, artManagementDto);
     }
 
     // 작품 삭제
     @Delete('/arts/:id')
     @ApiOperation({ summary: '개별 작품 삭제 API', description: '개별 작품 삭제' })
     @ApiCreatedResponse({ description: '개별 작품 삭제', type: Art })
-    deleteFile(@Param('id') id: number): string {
+    deleteArt(@Param('id') id: number): Promise<void> {
         return this.artManagementService.deleteArt(id);
     }
-    
 }

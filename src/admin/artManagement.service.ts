@@ -33,12 +33,13 @@ export class ArtManagementService {
     }
 
     // 작품 수정
-    updateArt(id: number) {
-        return `update art #${id}.`;
+    async updateArt(id: number, newArt: ArtManagementDto): Promise<Art> {
+        return this.artManagementRepository.updateArt(id, newArt);
     }
 
     // 작품 삭제
-    deleteArt(id: number) {
-        return `delete art #${id}.`;
+    async deleteArt(id: number): Promise<void> {
+        const result = await this.artManagementRepository.delete(id);
+        console.log(result);
     }
 }
