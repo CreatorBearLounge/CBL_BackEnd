@@ -33,12 +33,12 @@ export class ArtManagementService {
     }
 
     // 작품 수정
-    updateFile(id: number) {
-        return `update file #${id}.`;
+    updateArt(id: number) {
+        return `update art #${id}.`;
     }
 
     // 작품 삭제
-    deleteFile(id: number) {
-        return `delete file #${id}.`;
+    deleteArt(id: number) {
+        return `delete art #${id}.`;
     }
 }
