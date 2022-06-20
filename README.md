@@ -1,5 +1,9 @@
 # CreatorBearLounge_BackEnd
 
+### ERD
+https://www.erdcloud.com/d/KQ7oBLmx89SjyuTTE
+
+
 #### npm install 오류시
 
 `npm i typeorm@0.2.41 @nestjs/typeorm@8.0.2`
