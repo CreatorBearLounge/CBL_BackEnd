@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDate, IsString } from "class-validator";
+import { IsDate, IsInt, IsString } from "class-validator";
 import { FileSystemStoredFile, HasMimeType, IsFile, MaxFileSize } from "nestjs-form-data";
 
 export class ArtManagementDto {
@@ -19,6 +19,9 @@ export class ArtManagementDto {
 
     @IsString() 
     description: string;
+
+    @IsInt()
+    viewCount: number;
 
     @IsFile()
     @MaxFileSize(1e6)
