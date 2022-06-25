@@ -38,4 +38,14 @@ export class ArtManagementRepository extends Repository<Art> {
         return artToUpdate;
 
     }
+
+     // 개별 작품 조회시 마다 조회수 1 증가
+    async viewCount(id: number) {
+        const artToUpdate = await this.findOne(id);
+        artToUpdate.viewCount += 1;
+
+        await this.save(artToUpdate);
+
+        return artToUpdate;
+    }
 }
