@@ -56,8 +56,8 @@ export class ArtManagementController {
 
     // 작가 리스트 조회
     @Get('/artists')
-    @ApiOperation({ summary: '전체 작품 리스트 조회 API', description: '전체 작품 리스트 조회' }) // 요청 URL 에 매핑된 API 에 대한 설명
-    @ApiCreatedResponse({ description: '전체 작품 리스트 조회', type: Artist }) // API 응답에 대한 정의
+    @ApiOperation({ summary: '전체 작가 리스트 조회 API', description: '전체 작가 리스트 조회' }) // 요청 URL 에 매핑된 API 에 대한 설명
+    @ApiCreatedResponse({ description: '전체 작가 리스트 조회', type: Artist }) // API 응답에 대한 정의
     getArtistList(): Promise <Artist[]> {
         return this.artManagementService.getArtist();
     }

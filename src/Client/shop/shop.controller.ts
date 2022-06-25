@@ -2,33 +2,19 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ShopService } from './shop.service';
 import { CreateShopDto } from './dto/create-shop.dto';
 import { UpdateShopDto } from './dto/update-shop.dto';
+import { Art } from 'src/admin/entities/artManagement.entity';
+import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 
 @Controller('shop')
 export class ShopController {
-  constructor(private readonly shopService: ShopService) {}
+  constructor(private readonly shopService: ShopService) { }
 
-  @Post()
-  create(@Body() createShopDto: CreateShopDto) {
-    return this.shopService.create(createShopDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.shopService.findAll();
-  }
-
+  // 카테고리 또는 작가 별 작품 리스트 가져오기
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shopService.findOne(+id);
-  }
+  @ApiOperation({ summary: '카테고리 또는 작가 별 작품 리스트 가져오는 API', description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
+  @ApiCreatedResponse({ description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShopDto: UpdateShopDto) {
-    return this.shopService.update(+id, updateShopDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shopService.remove(+id);
+  findArtsByCategoryOrAtrist(@Param('id') id: string): Promise<Art[]> {
+    return this.shopService.findArtsByCategoryOrAtrist(id);
   }
 }
