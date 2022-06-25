@@ -3,17 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtManagementModule } from './admin/artManagement.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { InfoModule } from './Client/info/info.module';
+import { ShopModule } from './Client/shop/shop.module';
 import { typeORMConfig } from './config/typeorm.config';
-import { ShopModule } from './shop/shop.module';
-import { MainModule } from './main/main.module';
-import { InfoModule } from './info/info.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeORMConfig),
     ArtManagementModule,
     ShopModule,
-    MainModule,
     InfoModule
   ],
   controllers: [AppController],
