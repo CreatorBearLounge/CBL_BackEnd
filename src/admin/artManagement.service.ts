@@ -28,6 +28,9 @@ export class ArtManagementService {
 
     // 개별 작품 조회
     async getArtById(id: number): Promise <Art> {
+        
+        this.artManagementRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
+
         const found = await this.artManagementRepository.findOne(id);
 
         if (!found) {
