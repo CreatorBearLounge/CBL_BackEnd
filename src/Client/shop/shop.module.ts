@@ -15,11 +15,3 @@ import { ArtManagementService } from 'src/admin/artManagement.service';
   providers: [ShopService, ArtManagementService]
 })
 export class ShopModule {}
-@Module({
-  imports: [
-    TypeOrmModule.forFeature([ArtManagementRepository, ArtistRepository]), NestjsFormDataModule
-  ],
-  controllers: [ShopController],
-  providers: [ShopService, ArtManagementService]
-})
-export class ShopModule {}
