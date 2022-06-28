@@ -1,6 +1,8 @@
 import { EntityRepository, Repository } from "typeorm";
 import { ArtManagementDto } from "./dto/artManagement.dto";
+import { CategoryDto } from "./dto/category.dto";
 import { Art } from "./entities/artManagement.entity";
+import { Category } from "./entities/category.entity";
 
 @EntityRepository(Art)
 export class ArtManagementRepository extends Repository<Art> {
@@ -38,6 +40,7 @@ export class ArtManagementRepository extends Repository<Art> {
         return artToUpdate;
 
     }
+
 
      // 개별 작품 조회시 마다 조회수 1 증가
     async viewCount(id: number) {

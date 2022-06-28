@@ -10,10 +10,10 @@ export class Art extends BaseEntity{
     title: string;
 
     @Column({ nullable: true })
-    category: string;
+    category: number;
 
     @Column({ nullable: true })
-    artist: string;
+    artist: number;
 
     @Column('date', { nullable: true })
     date: Date;

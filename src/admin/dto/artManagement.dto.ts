@@ -7,11 +7,11 @@ export class ArtManagementDto {
     @IsString() 
     title: string;
 
-    @IsString() 
-    category: string;
+    @IsInt()
+    category: number;
 
-    @IsString() 
-    artist: string;
+    @IsInt() 
+    artist: number;
 
 //    @Type(()=>Date)
     @IsDate()

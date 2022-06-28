@@ -2,14 +2,17 @@ import { Controller, Get, Param, Post, Delete, Patch, Body } from '@nestjs/commo
 import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { ArtManagementService } from './artManagement.service';
+import { ShopService } from 'src/Client/shop/shop.service';
 import { ArtistDto } from './dto/artist.dto';
+import { CategoryDto } from './dto/category.dto';
 import { ArtManagementDto } from './dto/artManagement.dto';
 import { Art } from './entities/artManagement.entity';
 import { Artist } from './entities/artist.entity';
+import { Category } from './entities/category.entity';
 
 @Controller('admin')
 export class ArtManagementController {
-    constructor(private artManagementService: ArtManagementService) {}
+    constructor(private artManagementService: ArtManagementService, private shopService: ShopService) {}
 
     // 작품 관리 메인 페이지 - 전체 작품 리스트 조회
     @Get('/arts')
@@ -53,7 +56,6 @@ export class ArtManagementController {
         return this.artManagementService.deleteArt(id);
     }
 
-
     // 작가 리스트 조회
     @Get('/artists')
     @ApiOperation({ summary: '전체 작가 리스트 조회 API', description: '전체 작가 리스트 조회' }) // 요청 URL 에 매핑된 API 에 대한 설명
@@ -69,5 +71,22 @@ export class ArtManagementController {
     @FormDataRequest()
     uploadArtist(@Body() artistDto: ArtistDto): Promise<Artist> {
         return this.artManagementService.uploadArtist(artistDto);
+    }
+
+    // 카테고리 업로드 
+    @Post('/category/upload')
+    @ApiOperation({ summary: '카테고리 업로드 API', description: '카테고리 업로드' })
+    @ApiCreatedResponse({ description: '카테고리 업로드', type: Category })
+    @FormDataRequest()
+    uploadCategory(@Body() categoryDto: CategoryDto): Promise<Category> {
+        return this.artManagementService.uploadCategory(categoryDto);
+    }
+
+    // 작가 별 분배포인트 계산
+    @Get('/distribution/:id')
+    @ApiOperation({ summary: '작가 별 분배포인트 계산 API', description: '작가 별 분배포인트 계산' })
+    @ApiCreatedResponse({ description: '작가 별 분배포인트 계산', type: Category })
+    calculateDistribution(@Param('id') id: number): Promise<number> {
+        return this.shopService.calculateDistribution(id);
     }
 }

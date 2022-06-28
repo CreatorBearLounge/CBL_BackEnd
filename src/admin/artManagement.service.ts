@@ -6,14 +6,19 @@ import { ArtManagementDto } from './dto/artManagement.dto';
 import { Art } from './entities/artManagement.entity';
 import { Artist } from './entities/artist.entity';
 import { ArtistDto } from './dto/artist.dto';
+import { CategoryRepository } from './category.repository';
+import { CategoryDto } from './dto/category.dto';
+import { Category } from './entities/category.entity';
 
 @Injectable()
 export class ArtManagementService {
     constructor(
         @InjectRepository(ArtManagementRepository)
         @InjectRepository(ArtistRepository)
+        @InjectRepository(CategoryRepository)
         private artManagementRepository: ArtManagementRepository,
         private artistRepository: ArtistRepository,
+        private categoryRepository: CategoryRepository,
     ){}
 
     // 작품 리스트 조회
@@ -59,6 +64,17 @@ export class ArtManagementService {
 
     // 작가 업로드
     async uploadArtist(artistDto: ArtistDto): Promise<Artist> {
-        return this.artistRepository.uploadArt(artistDto);
+        return this.artistRepository.uploadArtist(artistDto);
     }
+
+    // 카테고리 업로드
+    async uploadCategory(categoryDto: CategoryDto): Promise<Category> {
+        return this.categoryRepository.uploadCategory(categoryDto);
+    }
+
+
+    // // 분배
+    // async calculateDistribution(id: number): Promise<any> {
+    //     return this.categoryRepository.calculateDistribution(id);
+    // }
 }

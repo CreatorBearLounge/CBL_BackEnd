@@ -14,7 +14,25 @@ export class ShopController {
   @ApiCreatedResponse({ description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
 
   findArtsByCategoryOrAtrist(@Param('id') id: string): Promise<Art[]> {
-    return this.shopService.findArtsByCategoryOrAtrist(id);
+    return this.shopService.findArtsByCategoryOrArtist(id);
+  }
+
+  // 카테고리 별 작품 리스트 가져오기
+  @Get('/category/:id')
+  @ApiOperation({ summary: '카테고리 또는 작가 별 작품 리스트 가져오는 API', description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
+  @ApiCreatedResponse({ description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
+
+  findArtsByArtist(@Param('id') id: number): Promise<Art[]> {
+    return this.shopService.findArtsByArtist(id);
+  }
+
+  // 카테고리 별 작품 리스트 가져오기
+  @Get('/category/:id')
+  @ApiOperation({ summary: '카테고리 또는 작가 별 작품 리스트 가져오는 API', description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
+  @ApiCreatedResponse({ description: '카테고리 또는 작가 별 작품 리스트 가져오기' })
+
+  findArtsByCategory(@Param('id') id: number): Promise<Art[]> {
+    return this.shopService.findArtsByCategory(id);
   }
 
   // 작품 상세 페이지
