@@ -7,13 +7,12 @@ export class ArtistRepository extends Repository<Artist> {
 
     // 작가 업로드
     async uploadArt(artistDto: ArtistDto): Promise<Artist> {
-        const {name, description, resume, thumbnail} = artistDto;
+        const {name, description, resume} = artistDto;
 
         const artist = this.create({
             name,
             description,
             resume,
-            thumbnail
         })
 
         await this.save(artist);

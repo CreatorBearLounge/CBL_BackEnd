@@ -3,7 +3,7 @@ import * as multer from 'multer';
 import * as AWS from 'aws-sdk';
 import * as multerS3 from 'multer-s3';
 import { S3Repository } from './s3.repository';
-import { UploadFile } from './entities/s3.entity';
+import { S3 } from './entities/s3.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 AWS.config.update({
@@ -16,22 +16,19 @@ AWS.config.update({
 @Injectable()
 export class S3Service {
 
-  constructor(@InjectRepository(UploadFile) 
+  constructor(@InjectRepository(S3) 
     private readonly s3Repository: S3Repository) {}
 
   async uploadImage(files: Express.Multer.File[],@Req() request, @Res() response) { 
+
     const uploadFiles = [];
     for(const element of files) {
-      const file = new UploadFile();
-      file.originalName =element.originalname;
+      const file = new S3();
+      file.originalName = element.originalname;
       uploadFiles.push(file);
     }
     console.log(uploadFiles);
-    // console.log(this.s3Repository);
     
-    // try{
-      // console.log(request.files[0].location)
-      // return {data: await this.s3Repository.save(uploadFiles)};
     try{
       this.s3Repository.save(uploadFiles);
       console.log(request.files[0].location)

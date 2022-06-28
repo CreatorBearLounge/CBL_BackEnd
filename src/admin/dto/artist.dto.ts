@@ -17,5 +17,9 @@ export class ArtistDto {
     @MaxFileSize(1e6)
     @HasMimeType(['image/jpeg', 'image/png'])
     thumbnail: FileSystemStoredFile;
+    // @IsString()
+    // profile: string;
+
+
 }
 

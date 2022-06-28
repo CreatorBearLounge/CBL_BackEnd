@@ -6,8 +6,9 @@ import { Art } from "./entities/artManagement.entity";
 export class ArtManagementRepository extends Repository<Art> {
 
     // 작품 업로드
-    async uploadArt(artManagementDto: ArtManagementDto): Promise<Art> {
-        const {title, category, artist, date, description, thumbnail} = artManagementDto;
+    async uploadArt(artManagementDto: ArtManagementDto, url: string): Promise<Art> {
+        const {title, category, artist, date, description} = artManagementDto;
+        const thumbnail = url;
 
         const art = this.create({
             title,
@@ -15,7 +16,7 @@ export class ArtManagementRepository extends Repository<Art> {
             artist,
             date,
             description,
-            thumbnail
+            thumbnail,
         })
 
         await this.save(art);
@@ -31,7 +32,7 @@ export class ArtManagementRepository extends Repository<Art> {
         artToUpdate.artist = newArt.artist;
         artToUpdate.date = newArt.date;
         artToUpdate.description = newArt.description;
-        artToUpdate.thumbnail = newArt.thumbnail;
+        // artToUpdate.thumbnail = newArt.thumbnail;
 
         await this.save(artToUpdate);
 

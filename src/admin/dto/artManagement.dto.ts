@@ -27,5 +27,6 @@ export class ArtManagementDto {
     @MaxFileSize(1e6)
     @HasMimeType(['image/jpeg', 'image/png'])
     thumbnail: FileSystemStoredFile;
+
 }
 

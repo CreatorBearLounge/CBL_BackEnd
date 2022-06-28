@@ -24,6 +24,8 @@ export class Art extends BaseEntity{
     @Column({ nullable: true })
     viewCount: number;
 
-    @Column({type: 'bytea', nullable: true})
-    thumbnail: FileSystemStoredFile;
+    // @Column({type: 'bytea', nullable: true})
+    // thumbnail: FileSystemStoredFile;
+    @Column({ nullable: true })
+    thumbnail: string;
 }

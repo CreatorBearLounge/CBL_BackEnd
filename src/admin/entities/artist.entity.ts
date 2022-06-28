@@ -15,6 +15,9 @@ export class Artist extends BaseEntity{
     @Column({ nullable: true })
     resume: string;
 
-    @Column({type: 'bytea', nullable: true})
-    thumbnail: FileSystemStoredFile;
+    // @Column({type: 'bytea', nullable: true})
+    // thumbnail: FileSystemStoredFile;
+
+    @Column({ nullable: true })
+    profile: string;
 }
