@@ -23,6 +23,9 @@ export class ArtManagementDto {
     @IsInt()
     viewCount: number;
 
+    @IsInt()
+    downloadCount: number;
+
     @IsFile()
     @MaxFileSize(1e6)
     @HasMimeType(['image/jpeg', 'image/png'])

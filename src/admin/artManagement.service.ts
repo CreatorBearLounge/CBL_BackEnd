@@ -19,10 +19,10 @@ export class ArtManagementService {
         private artManagementRepository: ArtManagementRepository,
         private artistRepository: ArtistRepository,
         private categoryRepository: CategoryRepository,
-    ){}
+    ) { }
 
     // 작품 리스트 조회
-    async getArts(): Promise <Art[]> {
+    async getArts(): Promise<Art[]> {
         return await this.artManagementRepository.find();
     }
 
@@ -32,8 +32,8 @@ export class ArtManagementService {
     }
 
     // 개별 작품 조회
-    async getArtById(id: number): Promise <Art> {
-        
+    async getArtById(id: number): Promise<Art> {
+
         this.artManagementRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
 
         const found = await this.artManagementRepository.findOne(id);
@@ -58,7 +58,7 @@ export class ArtManagementService {
 
 
     // 작가 리스트 조회
-    async getArtist(): Promise <Artist[]> {
+    async getArtist(): Promise<Artist[]> {
         return await this.artistRepository.find();
     }
 
@@ -73,8 +73,28 @@ export class ArtManagementService {
     }
 
 
-    // // 분배
-    // async calculateDistribution(id: number): Promise<any> {
-    //     return this.categoryRepository.calculateDistribution(id);
-    // }
+    // 작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)
+    async getArtDetail(id: number): Promise<any> {
+
+        this.artManagementRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
+
+        const art = await this.artManagementRepository.findOne(id); // 작품
+
+        if (!art) {
+            throw new NotFoundException(`Cant't find art with id ${id}`);
+        }
+
+
+        const artist = await this.artistRepository.findOne(art.artist); // 작가
+
+        let artistsArts = await this.artManagementRepository.find({ // 작가의 전체 작품
+            where: [
+                { artist: art.artist }
+            ]
+        });
+
+        let filteredArts = artistsArts.filter((element) => element.id != id); // 현재 작품 제외한 작품들
+
+        return [art, artist, filteredArts];
+    }
 }
