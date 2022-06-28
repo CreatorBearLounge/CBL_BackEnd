@@ -48,9 +48,10 @@ export class ArtManagementService {
         
         try{
         this.s3Repository.save(uploadFiles);
-        console.log(request.files[0].location)
+        console.log(typeof(request.files[0].location));
         // return response.json(request.files[0].location);
         const url = (request.files[0].location);
+        // const url = response.json(request.files[0].location);
         
         return this.artManagementRepository.uploadArt(artManagementDto, url);
         }

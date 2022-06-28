@@ -23,10 +23,11 @@ export class ArtManagementDto {
     @IsInt()
     viewCount: number;
 
-    @IsFile()
-    @MaxFileSize(1e6)
-    @HasMimeType(['image/jpeg', 'image/png'])
-    thumbnail: FileSystemStoredFile;
+    // @IsFile()
+    // @MaxFileSize(1e6)
+    // @HasMimeType(['image/jpeg', 'image/png'])
+    @IsString()
+    thumbnail: string;
 
 }
 
