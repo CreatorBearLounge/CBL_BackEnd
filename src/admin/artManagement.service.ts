@@ -6,10 +6,9 @@ import { ArtManagementDto } from './dto/artManagement.dto';
 import { Art } from './entities/artManagement.entity';
 import { Artist } from './entities/artist.entity';
 import { ArtistDto } from './dto/artist.dto';
-import { S3Service } from 'src/s3/s3.service';
 import * as AWS from 'aws-sdk';
-import { S3 } from 'src/s3/entities/s3.entity';
 import { S3Repository } from './s3.repository';
+import { S3 } from './entities/s3.entity';
 
 
 AWS.config.update({
@@ -36,27 +35,33 @@ export class ArtManagementService {
     }
 
     // 작품 업로드
-    async uploadArt(artManagementDto: ArtManagementDto, files: Express.Multer.File[],@Req() request, @Res() response): Promise<Art> {
-        
-        const uploadFiles = [];
+    /**
+     * JSDOC
+     * @Param location image url
+     * @Author 현빈짱
+     * @Return art
+     */
+    async uploadArt(artManagementDto: ArtManagementDto, files: Express.Multer.File[], location: string): Promise<Art> {
+        console.log('ArtManagementService-uploadArt-start');
+        try{
+            const uploadFiles = [];
         for(const element of files) {
         const file = new S3();
         file.originalName = element.originalname;
         uploadFiles.push(file);
         }
         console.log(uploadFiles);
-        
-        try{
-        this.s3Repository.save(uploadFiles);
-        console.log(typeof(request.files[0].location));
-        // return response.json(request.files[0].location);
-        const url = (request.files[0].location);
-        // const url = response.json(request.files[0].location);
+
+        await this.s3Repository.save(uploadFiles);
+        const url = (location);
+        console.log({url});
         
         return this.artManagementRepository.uploadArt(artManagementDto, url);
         }
         catch(error) {
         throw new BadRequestException(error.message);
+        } finally {
+            console.log('ArtManagementService-uploadArt-end');
         }
     }
 

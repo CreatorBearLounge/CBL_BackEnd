@@ -7,29 +7,41 @@ export class ArtManagementRepository extends Repository<Art> {
 
     // 작품 업로드
     async uploadArt(artManagementDto: ArtManagementDto, url: string): Promise<Art> {
-        const {title, category, artist, date, description} = artManagementDto;
-        const thumbnail = url;
+        try {
+            console.log('ArtManagementRepository-uploadArt-start');
+            const thumbnail = url;
+            const viewCount = 0;
+            const downloadCount = 0;
+            
+        const {title, categoryId, artistId, date, description}  = artManagementDto;
 
         const art = this.create({
             title,
-            category, 
-            artist,
+            categoryId, 
+            artistId,
             date,
             description,
             thumbnail,
+            viewCount,
+            downloadCount,
         })
 
-        await this.save(art);
-
-        return art;
+        return this.save(art);
+        } catch(err) {
+            console.log('ArtManagementRepository-uploadArt-err');
+            throw err;
+        } finally {
+            console.log('ArtManagementRepository-uploadArt-end');
+        }
+        
     }
 
     // 작품 수정
     async updateArt(id: number, newArt: ArtManagementDto): Promise<Art> {
         const artToUpdate = await this.findOne(id);
         artToUpdate.title = newArt.title;
-        artToUpdate.category = newArt.category;
-        artToUpdate.artist = newArt.artist;
+        artToUpdate.categoryId = newArt.categoryId;
+        artToUpdate.artistId = newArt.artistId;
         artToUpdate.date = newArt.date;
         artToUpdate.description = newArt.description;
         // artToUpdate.thumbnail = newArt.thumbnail;

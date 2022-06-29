@@ -6,7 +6,6 @@ import { AppService } from './app.service';
 import { InfoModule } from './Client/info/info.module';
 import { ShopModule } from './Client/shop/shop.module';
 import { typeORMConfig } from './config/typeorm.config';
-import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -14,7 +13,6 @@ import { S3Module } from './s3/s3.module';
     ArtManagementModule,
     ShopModule,
     InfoModule,
-    S3Module
   ],
   controllers: [AppController],
   providers: [AppService],

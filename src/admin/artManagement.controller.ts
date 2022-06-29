@@ -6,7 +6,7 @@ import { ArtistDto } from './dto/artist.dto';
 import { ArtManagementDto } from './dto/artManagement.dto';
 import { Art } from './entities/artManagement.entity';
 import { Artist } from './entities/artist.entity';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as AWS from 'aws-sdk';
 import * as multerS3 from 'multer-s3';
 import 'dotenv/config';
@@ -47,11 +47,17 @@ export class ArtManagementController {
           key: function (req, file, cb) {
             cb(null, `${Date.now().toString()}-${file.originalname}`);
           }
-        })
+        }),
       }))
-    async uploadArt(@Body() artManagementDto: ArtManagementDto, @UploadedFiles() files: Express.Multer.File[], @Req() request, @Res() response): Promise<Art> {
-        
-        return await this.artManagementService.uploadArt(artManagementDto, files, request, response);
+    async uploadArt(@Body() artManagementDto: ArtManagementDto, @UploadedFiles() files: Express.Multer.File[], @Req() request, @Res() response) {
+        console.log('ArtManagementController-uplaodArt-start');
+        // const locations = request.files.locations;
+        const { location } = request.files[0];
+        const uploadedArt = await this.artManagementService.uploadArt(artManagementDto, files, location);
+        console.log('ArtManagementController-uplaodArt-end');
+        // console.log({test});
+        response.send(uploadedArt); // 문제 생길 수 있음 
+        // return test;
     }
 
     // 작품 상세 페이지

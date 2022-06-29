@@ -1,19 +1,20 @@
 import { Type } from "class-transformer";
 import { IsDate, IsInt, IsString } from "class-validator";
 import { FileSystemStoredFile, HasMimeType, IsFile, MaxFileSize } from "nestjs-form-data";
+import { isInt32Array } from "util/types";
 
 export class ArtManagementDto {
 
     @IsString() 
     title: string;
 
-    @IsString() 
-    category: string;
+    @IsInt() 
+    categoryId: number;
 
-    @IsString() 
-    artist: string;
+    @IsInt() 
+    artistId: number;
 
-//    @Type(()=>Date)
+    // @Type(()=>Date)
     @IsDate()
     date: Date;
 
@@ -23,9 +24,11 @@ export class ArtManagementDto {
     @IsInt()
     viewCount: number;
 
-    // @IsFile()
-    // @MaxFileSize(1e6)
-    // @HasMimeType(['image/jpeg', 'image/png'])
+    @IsInt()
+    downloadCount: number;
+
+    downloadUserId: number[];
+    
     @IsString()
     thumbnail: string;
 
