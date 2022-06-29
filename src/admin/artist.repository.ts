@@ -6,6 +6,10 @@ import { Artist } from "./entities/artist.entity";
 export class ArtistRepository extends Repository<Artist> {
 
     // 작가 업로드
+
+    async uploadArt(artistDto: ArtistDto): Promise<Artist> {
+        const {name, description, resume} = artistDto;
+
     async uploadArtist(artistDto: ArtistDto): Promise<Artist> {
         const {name, description, resume, thumbnail} = artistDto;
 
@@ -13,7 +17,6 @@ export class ArtistRepository extends Repository<Artist> {
             name,
             description,
             resume,
-            thumbnail
         })
 
         await this.save(artist);

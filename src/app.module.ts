@@ -12,7 +12,7 @@ import { typeORMConfig } from './config/typeorm.config';
     TypeOrmModule.forRoot(typeORMConfig),
     ArtManagementModule,
     ShopModule,
-    InfoModule
+    InfoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

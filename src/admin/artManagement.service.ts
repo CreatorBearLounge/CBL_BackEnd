@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, Req, Res } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArtManagementRepository } from './artManagement.repository';
 import { ArtistRepository } from './artist.repository';
@@ -6,20 +6,35 @@ import { ArtManagementDto } from './dto/artManagement.dto';
 import { Art } from './entities/artManagement.entity';
 import { Artist } from './entities/artist.entity';
 import { ArtistDto } from './dto/artist.dto';
+import * as AWS from 'aws-sdk';
+import { S3Repository } from './s3.repository';
+import { S3 } from './entities/s3.entity';
 import { CategoryRepository } from './category.repository';
 import { CategoryDto } from './dto/category.dto';
 import { Category } from './entities/category.entity';
 
+
+
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS,
+    region: process.env.AWS_REGION
+  });
+  
 @Injectable()
 export class ArtManagementService {
     constructor(
         @InjectRepository(ArtManagementRepository)
         @InjectRepository(ArtistRepository)
         @InjectRepository(CategoryRepository)
+        @InjectRepository(S3Repository)
+        
         private artManagementRepository: ArtManagementRepository,
         private artistRepository: ArtistRepository,
-        private categoryRepository: CategoryRepository,
-    ) { }
+         private categoryRepository: CategoryRepository,
+        private s3Repository: S3Repository,
+    ){}
+
 
     // 작품 리스트 조회
     async getArts(): Promise<Art[]> {
@@ -27,8 +42,34 @@ export class ArtManagementService {
     }
 
     // 작품 업로드
-    async uploadArt(artManagementDto: ArtManagementDto): Promise<Art> {
-        return this.artManagementRepository.uploadArt(artManagementDto);
+    /**
+     * JSDOC
+     * @Param location image url
+     * @Author 현빈짱
+     * @Return art
+     */
+    async uploadArt(artManagementDto: ArtManagementDto, files: Express.Multer.File[], location: string): Promise<Art> {
+        console.log('ArtManagementService-uploadArt-start');
+        try{
+            const uploadFiles = [];
+        for(const element of files) {
+        const file = new S3();
+        file.originalName = element.originalname;
+        uploadFiles.push(file);
+        }
+        console.log(uploadFiles);
+
+        await this.s3Repository.save(uploadFiles);
+        const url = (location);
+        console.log({url});
+        
+        return this.artManagementRepository.uploadArt(artManagementDto, url);
+        }
+        catch(error) {
+        throw new BadRequestException(error.message);
+        } finally {
+            console.log('ArtManagementService-uploadArt-end');
+        }
     }
 
     // 개별 작품 조회
