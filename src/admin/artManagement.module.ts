@@ -7,13 +7,16 @@ import { ArtistRepository } from './artist.repository';
 import { ShopService } from 'src/Client/shop/shop.service';
 import { NestjsFormDataModule } from 'nestjs-form-data';
 import { S3Repository } from './s3.repository';
+import { DistributionModule } from './distribution/distribution.module';
+import { CategoryRepository } from './category.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ArtManagementRepository, ArtistRepository, S3Repository]), NestjsFormDataModule
-  ],
+    TypeOrmModule.forFeature([ArtManagementRepository, ArtistRepository, S3Repository, CategoryRepository]), NestjsFormDataModule
+  ], DistributionModule
   controllers: [ArtManagementController],
   providers: [ArtManagementService, ShopService],
   exports: [],
+
 })
 export class ArtManagementModule {}

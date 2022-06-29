@@ -6,8 +6,12 @@ import { Artist } from "./entities/artist.entity";
 export class ArtistRepository extends Repository<Artist> {
 
     // 작가 업로드
+
     async uploadArt(artistDto: ArtistDto): Promise<Artist> {
         const {name, description, resume} = artistDto;
+
+    async uploadArtist(artistDto: ArtistDto): Promise<Artist> {
+        const {name, description, resume, thumbnail} = artistDto;
 
         const artist = this.create({
             name,
