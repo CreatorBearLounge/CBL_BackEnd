@@ -28,7 +28,7 @@ export class ShopService {
 
     const artList = await this.artManagementRepository.find({
       where: [
-        { category: id }
+        { categoryId: id }
       ]
     });
 
@@ -43,7 +43,7 @@ export class ShopService {
 
     const artList = await this.artManagementRepository.find({
       where: [
-        { artist: id }
+        { artistId: id }
       ]
     });
 
@@ -54,7 +54,7 @@ export class ShopService {
   async findArtsByArtist2(id: number): Promise<Art[]> {
     return await this.artManagementRepository.find({
       where: [
-        { artist: id }
+        { artistId: id }
       ]
     });
   }
@@ -63,13 +63,13 @@ export class ShopService {
   async calculateDistribution(id: number): Promise<number> {
     const list = await this.artManagementRepository.find({
       where: [
-        { artist: id }
+        { artistId: id }
       ]
     }); // 작가명이 id인 사람의 작품들 배열 ==> 여기서 카테고리 명만 빼서 배열에 저장하자. 카테고리 명에 따른 분배 포인트들의 합 구하기.
 
     const categoryArray = []; // 카테고리 id들 저장되어 있음
     list.forEach((element) => {
-      categoryArray.push(element.category);
+      categoryArray.push(element.categoryId);
     })
 
     console.log(categoryArray); // [1,2,3]

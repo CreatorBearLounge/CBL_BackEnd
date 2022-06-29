@@ -13,7 +13,7 @@ import { CategoryRepository } from './category.repository';
 @Module({
   imports: [
     TypeOrmModule.forFeature([ArtManagementRepository, ArtistRepository, S3Repository, CategoryRepository]), NestjsFormDataModule
-  ], DistributionModule
+  ],
   controllers: [ArtManagementController],
   providers: [ArtManagementService, ShopService],
   exports: [],

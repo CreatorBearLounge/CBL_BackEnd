@@ -126,11 +126,11 @@ export class ArtManagementService {
         }
 
 
-        const artist = await this.artistRepository.findOne(art.artist); // 작가
+        const artist = await this.artistRepository.findOne(art.artistId); // 작가
 
         let artistsArts = await this.artManagementRepository.find({ // 작가의 전체 작품
             where: [
-                { artist: art.artist }
+                { artistId: art.artistId }
             ]
         });
 

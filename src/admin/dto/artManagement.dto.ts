@@ -32,9 +32,4 @@ export class ArtManagementDto {
     
     @IsString()
     thumbnail: string;
-
-    @IsFile()
-    @MaxFileSize(1e6)
-    @HasMimeType(['image/jpeg', 'image/png'])
-    thumbnail: FileSystemStoredFile;
 }
