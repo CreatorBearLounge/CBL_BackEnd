@@ -26,6 +26,7 @@ export class Art extends BaseEntity{
 
     @Column({ nullable: true })
     downloadCount: number;
+    
     @Column("int", { nullable: true, array: true })
     downloadUserId: number[];
 

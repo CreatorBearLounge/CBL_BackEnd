@@ -10,7 +10,13 @@ export class DistributionController {
     @Get()
     @ApiOperation({ summary: '작가 별 분배포인트 계산 API', description: '작가 별 분배포인트 계산' })
     @ApiCreatedResponse({ description: '작가 별 분배포인트 계산', type: Category })
-    calculateDistribution(): Promise<number[]> {
+    calculateDistributionAll(): Promise<number[]> {
         return this.distributionService.calculateDistributionAll();
+    }
+
+    // 작가 한명 분배포인트 계산 테스트
+    @Get('/:id')
+    calculateDistribution(@Param('id') id: number): Promise<number> {
+        return this.distributionService.calculateDistribution(id);
     }
 }

@@ -23,9 +23,11 @@ export class DistributionService {
             ]
         }); // 작가명이 id인 사람의 작품들 배열 ==> 여기서 카테고리 명만 빼서 배열에 저장하자. 카테고리 명에 따른 분배 포인트들의 합 구하기.
 
-        const categoryArray = []; // 카테고리 id들 저장되어 있음
+        const categoryArray = []; // 각 작품들의 카테고리 id들 저장되어 있음
+        const downloadCountArray = []; // 각 작품들의 다운로드 횟수 저장되어 있음
         list.forEach((element) => {
             categoryArray.push(element.categoryId);
+            downloadCountArray.push(element.downloadCount);
         })
 
         //console.log(categoryArray); // [1,2,3]
@@ -38,26 +40,37 @@ export class DistributionService {
             })
             )
         }
-
-        let downloadDistributionSum = 0;
+        const categoryPoint = [];
 
         categoryList.forEach((element) => {
-            //console.log(element[0].downloadDistribution);
-            downloadDistributionSum += element[0].downloadDistribution;
+            categoryPoint.push(element[0].downloadDistribution);
         })
 
-        return downloadDistributionSum;
-        //console.log(downloadDistributionSum);
+        const calculatedPoint = [];
+
+        for (let i = 0; i < categoryPoint.length; i++) {
+            calculatedPoint.push(categoryPoint[i] * downloadCountArray[i]);
+        }
+
+        console.log(calculatedPoint);
+
+        const pointSum = calculatedPoint.reduce((sum, currVal) => { // 전체 포인트 합
+            return sum + currVal;
+        }, 0);
+
+        console.log(pointSum);
+        return pointSum;
     }
 
+    // 모든 작가 분배 포인트 계산
     async calculateDistributionAll(): Promise<number[]> {
-        const artistIdArray = await this.artistRepository.find({select: ["id"]});
-        const idArray = []; // 등록된 작가의 id들
+        const artistIdArray = await this.artistRepository.find({ select: ["id"] });
+        const idArray = []; // 등록된 작가의 id들 [1,2,3,4,5]
         for (const i of artistIdArray) {
             idArray.push(i.id);
         }
 
-        const calculatedPoint = []; // 작가별 포인트
+        const calculatedPoint = []; // 작가별 포인트 [15,6,0,0,0]
         for (const i of idArray) {
             calculatedPoint.push(await this.calculateDistribution(parseInt(i)));
         }

@@ -8,7 +8,6 @@ export class ArtManagementDto {
     @IsString() 
     title: string;
 
-
     @IsInt() 
     categoryId: number;
 
