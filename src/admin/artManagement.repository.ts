@@ -1,8 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 import { ArtManagementDto } from "./dto/artManagement.dto";
-import { CategoryDto } from "./dto/category.dto";
 import { Art } from "./entities/artManagement.entity";
-import { Category } from "./entities/category.entity";
 
 @EntityRepository(Art)
 export class ArtManagementRepository extends Repository<Art> {

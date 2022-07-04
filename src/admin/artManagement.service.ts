@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, Req, Res } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArtManagementRepository } from './artManagement.repository';
 import { ArtistRepository } from './artist.repository';
@@ -103,9 +103,28 @@ export class ArtManagementService {
         return await this.artistRepository.find();
     }
 
-    // 작가 업로드
-    async uploadArtist(artistDto: ArtistDto): Promise<Artist> {
-        return this.artistRepository.uploadArtist(artistDto);
+    // 작가 업로드 - s3 적용 (profile)
+    async uploadArtist(artistDto: ArtistDto, files: Express.Multer.File[], location: string): Promise<Artist> {
+        try{
+            const uploadFiles = [];
+        for(const element of files) {
+        const file = new S3();
+        file.originalName = element.originalname;
+        uploadFiles.push(file);
+        }
+        console.log(uploadFiles);
+
+        await this.s3Repository.save(uploadFiles);
+        const url = (location);
+        console.log({url});
+        
+        return this.artistRepository.uploadArtist(artistDto, url);
+        }
+        catch(error) {
+        throw new BadRequestException(error.message);
+        } finally {
+            console.log('ArtManagementService-uploadArt-end');
+        }
     }
 
     // 카테고리 업로드

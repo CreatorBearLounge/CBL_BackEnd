@@ -1,23 +1,31 @@
 import { EntityRepository, Repository } from "typeorm";
 import { ArtistDto } from "./dto/artist.dto";
 import { Artist } from "./entities/artist.entity";
-import { Art } from "./entities/artManagement.entity";
 
 @EntityRepository(Artist)
 export class ArtistRepository extends Repository<Artist> {
 
-    // 작가 업로드
-    async uploadArtist(artistDto: ArtistDto): Promise<Artist> {
-        const { name, description, resume } = artistDto;
+    // 작가 업로드 s3
+    async uploadArtist(artistDto: ArtistDto, url: string): Promise<Artist> {
 
-        const artist = this.create({
-            name,
-            description,
-            resume
-        })
+        try {
+            const profile = url;
 
-        await this.save(artist);
 
-        return artist;
+            const { name, description, resume } = artistDto;
+
+            const artist = this.create({
+                name,
+                description,
+                resume,
+                profile
+            })
+
+            await this.save(artist);
+
+            return artist;
+        } catch(err) {
+            console.log(err);
+        }
     }
 }
