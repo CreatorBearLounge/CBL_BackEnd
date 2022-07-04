@@ -1,5 +1,5 @@
 import { FileSystemStoredFile } from "nestjs-form-data";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Art")
 export class Art extends BaseEntity{
@@ -10,12 +10,12 @@ export class Art extends BaseEntity{
     title: string;
 
     @Column({ nullable: true })
-    category: string;
+    categoryId: number;
 
     @Column({ nullable: true })
-    artist: string;
+    artistId: number;
 
-    @Column('date', { nullable: true })
+    @CreateDateColumn() 
     date: Date;
 
     @Column({ nullable: true })
@@ -24,6 +24,13 @@ export class Art extends BaseEntity{
     @Column({ nullable: true })
     viewCount: number;
 
-    @Column({type: 'bytea', nullable: true})
-    thumbnail: FileSystemStoredFile;
+    @Column({ nullable: true })
+    downloadCount: number;
+    @Column("int", { nullable: true, array: true })
+    downloadUserId: number[];
+
+    // @Column({type: 'bytea', nullable: true})
+    // thumbnail: FileSystemStoredFile;
+    @Column({ nullable: true })
+    thumbnail: string;
 }

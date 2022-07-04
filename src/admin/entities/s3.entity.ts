@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { FileSystemStoredFile } from "nestjs-form-data";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity("upload_file")
-export class UploadFile {
+export class S3 {
     @PrimaryGeneratedColumn("uuid")
     id:string;
 
