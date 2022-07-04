@@ -13,6 +13,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import * as AWS from 'aws-sdk';
 import * as multerS3 from 'multer-s3';
 import 'dotenv/config';
+import { DistributionService } from './distribution/distribution.service';
 
 const s3 = new AWS.S3();
 AWS.config.update({
@@ -25,7 +26,7 @@ AWS.config.update({
 export class ArtManagementController {
     constructor(
         private artManagementService: ArtManagementService,
-        private shopService: ShopService,
+        private distributionService: DistributionService,
         ) {}
 
 
@@ -113,13 +114,5 @@ export class ArtManagementController {
     @FormDataRequest()
     uploadCategory(@Body() categoryDto: CategoryDto): Promise<Category> {
         return this.artManagementService.uploadCategory(categoryDto);
-    }
-
-    // 작가 별 분배포인트 계산
-    @Get('/distribution/:id')
-    @ApiOperation({ summary: '작가 별 분배포인트 계산 API', description: '작가 별 분배포인트 계산' })
-    @ApiCreatedResponse({ description: '작가 별 분배포인트 계산', type: Category })
-    calculateDistribution(@Param('id') id: number): Promise<number> {
-        return this.shopService.calculateDistribution(id);
     }
 }

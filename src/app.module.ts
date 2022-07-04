@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ArtManagementModule } from './admin/artManagement.module';
+import { DistributionModule } from './admin/distribution/distribution.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { InfoModule } from './Client/info/info.module';
@@ -13,6 +14,7 @@ import { typeORMConfig } from './config/typeorm.config';
     ArtManagementModule,
     ShopModule,
     InfoModule,
+    DistributionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
