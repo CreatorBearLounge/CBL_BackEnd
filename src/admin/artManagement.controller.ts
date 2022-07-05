@@ -2,14 +2,13 @@ import { Controller, Get, Param, Post, Delete, Patch, Body, UploadedFiles, Req, 
 import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { ArtManagementService } from './artManagement.service';
-import { ShopService } from 'src/Client/shop/shop.service';
 import { ArtistDto } from './dto/artist.dto';
 import { CategoryDto } from './dto/category.dto';
 import { ArtManagementDto } from './dto/artManagement.dto';
 import { Art } from './entities/artManagement.entity';
 import { Artist } from './entities/artist.entity';
 import { Category } from './entities/category.entity';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import * as AWS from 'aws-sdk';
 import * as multerS3 from 'multer-s3';
 import 'dotenv/config';
@@ -98,13 +97,26 @@ export class ArtManagementController {
         return this.artManagementService.getArtist();
     }
 
-    // 작가 업로드 
+    // 작가 업로드 - s3 버킷
     @Post('/artist/upload')
     @ApiOperation({ summary: '작가 업로드 API', description: '작가 업로드' })
     @ApiCreatedResponse({ description: '작가 업로드', type: Artist })
-    @FormDataRequest()
-    uploadArtist(@Body() artistDto: ArtistDto): Promise<Artist> {
-        return this.artManagementService.uploadArtist(artistDto);
+    @UseInterceptors(FilesInterceptor("file", 10, {
+        storage: multerS3({
+          s3: s3,
+          bucket: process.env.AWS_S3_BUCKET_NAME,
+          contentType: multerS3.AUTO_CONTENT_TYPE,
+          accessKeyId: process.env.AWS_ACCESS_KEY,
+          acl: 'public-read',
+          key: function (req, file, cb) {
+            cb(null, `${Date.now().toString()}-${file.originalname}`);
+          }
+        }),
+      }))
+    async uploadArtist(@Body() artistDto: ArtistDto, @UploadedFiles() files: Express.Multer.File[], @Req() request, @Res() response) {
+        const { location } = request.files[0];
+        const uploadedArt = await this.artManagementService.uploadArtist(artistDto, files, location);
+        response.send(uploadedArt);
     }
 
     // 카테고리 업로드 

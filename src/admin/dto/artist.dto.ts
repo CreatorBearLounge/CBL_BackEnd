@@ -1,6 +1,4 @@
-import { Type } from "class-transformer";
-import { IsDate, IsString } from "class-validator";
-import { FileSystemStoredFile, HasMimeType, IsFile, MaxFileSize } from "nestjs-form-data";
+import { IsString } from "class-validator";
 
 export class ArtistDto {
 
@@ -13,12 +11,13 @@ export class ArtistDto {
     @IsString() 
     resume: string; // 작가 이력
 
-    @IsFile()
-    @MaxFileSize(1e6)
-    @HasMimeType(['image/jpeg', 'image/png'])
-    thumbnail: FileSystemStoredFile;
-    // @IsString()
-    // profile: string;
+    // @IsFile()
+    // @MaxFileSize(1e6)
+    // @HasMimeType(['image/jpeg', 'image/png'])
+    // thumbnail: FileSystemStoredFile;
+
+    @IsString()
+    profile: string;
 
 
 }
