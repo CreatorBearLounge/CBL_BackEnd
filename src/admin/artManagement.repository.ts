@@ -13,7 +13,7 @@ export class ArtManagementRepository extends Repository<Art> {
             const viewCount = 0;
             const downloadCount = 0;
             
-        const {title, categoryId, artistId, date, description}  = artManagementDto;
+        const {title, categoryId, artistId, date, description, downloadUrl}  = artManagementDto;
 
         const art = this.create({
             title,
@@ -24,6 +24,7 @@ export class ArtManagementRepository extends Repository<Art> {
             thumbnail,
             viewCount,
             downloadCount,
+            downloadUrl
         })
 
         return this.save(art);

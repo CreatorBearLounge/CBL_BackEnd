@@ -34,4 +34,7 @@ export class Art extends BaseEntity{
     // thumbnail: FileSystemStoredFile;
     @Column({ nullable: true })
     thumbnail: string;
+
+    @Column({ nullable: true })
+    downloadUrl: string;
 }

@@ -27,4 +27,7 @@ export class ArtManagementDto {
     
     @IsString()
     thumbnail: string;
+
+    @IsString()
+    downloadUrl: string;
 }
