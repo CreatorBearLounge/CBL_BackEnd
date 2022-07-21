@@ -1,9 +1,10 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { Art } from 'src/admin/entities/artManagement.entity';
-import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ArtManagementService } from 'src/admin/artManagement.service';
 
+@ApiTags('shop')
 @Controller('shop')
 export class ShopController {
   constructor(private readonly shopService: ShopService, private readonly artManagementService: ArtManagementService) { }
@@ -19,9 +20,8 @@ export class ShopController {
 
   // 작가 별 작품 리스트 가져오기 (+ 작가 프로필)
   @Get('/artist/:id')
-  @ApiOperation({ summary: '작가 별 작품 리스트 가져오는 API', description: '작가 별 작품 리스트 가져오기' })
-  @ApiCreatedResponse({ description: '작가 별 작품 리스트 가져오기' })
-
+  @ApiOperation({ summary: '작가 별 작품 리스트 가져오는 API', description: '작가 별 작품 리스트 가져오기 (+ 작가 프로필) /artist/1' })
+  @ApiCreatedResponse({ description: '작가 별 작품 리스트 가져오기 (+ 작가 프로필)', type: Art})
   findArtsByArtist(@Param('id') id: number): Promise<any> {
     return this.shopService.findArtsByArtist(id);
   }

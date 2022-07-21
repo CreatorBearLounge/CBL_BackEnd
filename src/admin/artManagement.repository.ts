@@ -3,7 +3,8 @@ import { ArtManagementDto } from "./dto/artManagement.dto";
 import { Art } from "./entities/artManagement.entity";
 
 @EntityRepository(Art)
-export class ArtManagementRepository extends Repository<Art> {
+export class ArtManagementRepository extends Repository<Art>
+{
 
     // 작품 업로드
     async uploadArt(artManagementDto: ArtManagementDto, url: string): Promise<Art> {
@@ -53,8 +54,26 @@ export class ArtManagementRepository extends Repository<Art> {
 
     }
 
+    async getArtById(id: number): Promise<any> {
+        const artId = (await this.findOne(id)).id;
+        const title = (await this.findOne(id)).title;
+        const categoryId = (await this.findOne(id)).categoryId;
+        const artistId = (await this.findOne(id)).artistId;
+ 
 
-     // 개별 작품 조회시 마다 조회수 1 증가
+        
+        const date = (await this.findOne(id)).date;
+        const description = (await this.findOne(id)).description;
+        const viewCount = (await this.findOne(id)).viewCount;
+        const downloadCount = (await this.findOne(id)).downloadCount;
+        const downloadUserId = (await this.findOne(id)).downloadUserId;
+        const thumbnail = (await this.findOne(id)).thumbnail;
+        const downloadUrl = (await this.findOne(id)).downloadUrl;
+
+        return {artId, title, categoryId, artistId, date, description, viewCount, downloadCount, downloadUserId, thumbnail, downloadUrl};
+    }
+
+    // 개별 작품 조회시 마다 조회수 1 증가
     async viewCount(id: number) {
         const artToUpdate = await this.findOne(id);
         artToUpdate.viewCount += 1;

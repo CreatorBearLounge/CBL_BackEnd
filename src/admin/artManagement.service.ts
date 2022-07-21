@@ -12,6 +12,7 @@ import { S3 } from './entities/s3.entity';
 import { CategoryRepository } from './category.repository';
 import { CategoryDto } from './dto/category.dto';
 import { Category } from './entities/category.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 
 
@@ -73,16 +74,24 @@ export class ArtManagementService {
     }
 
     // 개별 작품 조회
-    async getArtById(id: number): Promise<Art> {
+    async getArtById(id: number): Promise<any> {
 
         this.artManagementRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
 
-        const found = await this.artManagementRepository.findOne(id);
+        
+        let found:any = await this.artManagementRepository.findOne(id);
+        
+        const artistId = found.artistId;
+        const artist = this.artistRepository.findOne(artistId);
+        
+        const artistName = (await artist).name;
 
         if (!found) {
             throw new NotFoundException(`Cant't find art with id ${id}`);
         }
 
+        
+        found.artistName = artistName;
         return found;
     }
 

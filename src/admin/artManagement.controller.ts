@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Post, Delete, Patch, Body, UploadedFiles, Req, Res, UseInterceptors } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiExcludeController, ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { ArtManagementService } from './artManagement.service';
 import { ArtistDto } from './dto/artist.dto';
@@ -21,6 +21,7 @@ AWS.config.update({
     region: process.env.AWS_REGION
   });
 
+@ApiTags('admin')
 @Controller('admin')
 export class ArtManagementController {
     constructor(
@@ -38,6 +39,7 @@ export class ArtManagementController {
     }
 
     // 작품 업로드 페이지
+    @ApiExcludeEndpoint()
     @Post('/arts/upload')
     @ApiOperation({ summary: '작품 업로드 API', description: '작품 업로드' })
     @ApiCreatedResponse({ description: '작품 업로드', type: Art })
@@ -66,25 +68,23 @@ export class ArtManagementController {
 
     // 작품 상세 페이지
     @Get('/arts/:id')
-    @ApiOperation({ summary: '개별 작품 조회 API', description: '개별 작품 조회' })
-    @ApiCreatedResponse({ description: '개별 작품 조회', type: Art })
-    getArtById(@Param('id') id: number): Promise<Art> {
+    @ApiOperation({ summary: '개별 작품 조회 API', description: '개별 작품 조회 admin/arts/1' })
+    @ApiCreatedResponse({ description: '** 반환값에 "artistName": "name1" 속성 포함', type: Art })
+    getArtById(@Param('id') id: number): Promise<any> {
         return this.artManagementService.getArtById(id);
     }
 
     // 작품 수정
+    @ApiExcludeEndpoint()
     @Patch('/arts/:id')
-    @ApiOperation({ summary: '개별 작품 수정 API', description: '개별 작품 수정' })
-    @ApiCreatedResponse({ description: '개별 작품 수정', type: Art })
     @FormDataRequest()
     updateArt(@Param('id') id: number, @Body() artManagementDto: ArtManagementDto): Promise<Art> {
         return this.artManagementService.updateArt(id, artManagementDto);
     }
 
     // 작품 삭제
+    @ApiExcludeEndpoint()
     @Delete('/arts/:id')
-    @ApiOperation({ summary: '개별 작품 삭제 API', description: '개별 작품 삭제' })
-    @ApiCreatedResponse({ description: '개별 작품 삭제', type: Art })
     deleteArt(@Param('id') id: number): Promise<void> {
         return this.artManagementService.deleteArt(id);
     }
@@ -98,6 +98,7 @@ export class ArtManagementController {
     }
 
     // 작가 업로드 - s3 버킷
+    @ApiExcludeEndpoint()
     @Post('/artist/upload')
     @ApiOperation({ summary: '작가 업로드 API', description: '작가 업로드' })
     @ApiCreatedResponse({ description: '작가 업로드', type: Artist })
@@ -120,6 +121,7 @@ export class ArtManagementController {
     }
 
     // 카테고리 업로드 
+    @ApiExcludeEndpoint()
     @Post('/category/upload')
     @ApiOperation({ summary: '카테고리 업로드 API', description: '카테고리 업로드' })
     @ApiCreatedResponse({ description: '카테고리 업로드', type: Category })
