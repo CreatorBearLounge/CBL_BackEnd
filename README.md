@@ -135,3 +135,6 @@ vox파일 건축 0.3회
 <img src = "https://user-images.githubusercontent.com/63040492/163362697-071823a5-d8d5-43e0-998f-b3ac35cba6b8.png"  width="300" height="300">
 <img src = "https://user-images.githubusercontent.com/63040492/163362713-b462c5a1-8a51-495e-9925-515941ff7b5d.png"  width="300" height="300">
 
+### API 문서
+https://satin-loganberry-da5.notion.site/2c5be6e066b841b5b166b2d1de1a1a7b?v=9a55442702294771a31fcf28329cae3c
+
