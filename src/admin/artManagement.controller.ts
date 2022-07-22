@@ -67,6 +67,7 @@ export class ArtManagementController {
     }
 
     // 작품 상세 페이지
+    @ApiExcludeEndpoint()
     @Get('/arts/:id')
     @ApiOperation({ summary: '개별 작품 조회 API', description: '개별 작품 조회 admin/arts/1' })
     @ApiCreatedResponse({ description: '** 반환값에 "artistName": "name1" 속성 포함', type: Art })

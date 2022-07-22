@@ -43,10 +43,10 @@ export class ShopController {
     return this.artManagementService.getArtById(id);
   }
 
-  // 작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)
+  // 작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 다른 작품들)
   @Get('/arts/detail/:id')
-  @ApiOperation({ summary: '작품 상세 조회 API', description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)' })
-  @ApiCreatedResponse({ description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)' })
+  @ApiOperation({ summary: '작품 상세 조회 API', description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 다른 작품들)' })
+  @ApiCreatedResponse({ description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 다른 작품들)' })
   getArtDetail(@Param('id') id: number): Promise<any> {
     return this.artManagementService.getArtDetail(id);
   }
