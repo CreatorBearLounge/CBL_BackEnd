@@ -1,8 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
-import { Category } from '../entities/category.entity';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Category } from 'src/Entity/category.entity';
 import { DistributionService } from './distribution.service';
 
+@ApiTags('distribution')
 @Controller('distribution')
 export class DistributionController {
     constructor(private readonly distributionService: DistributionService) { }

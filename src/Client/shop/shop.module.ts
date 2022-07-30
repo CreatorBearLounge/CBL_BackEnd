@@ -3,15 +3,15 @@ import { ShopService } from './shop.service';
 import { ShopController } from './shop.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NestjsFormDataModule } from 'nestjs-form-data';
-import { ArtistRepository } from 'src/admin/artist.repository';
-import { ArtManagementRepository } from 'src/admin/artManagement.repository';
-import { ArtManagementService } from 'src/admin/artManagement.service';
-import { S3Repository } from 'src/admin/s3.repository';
-import { CategoryRepository } from 'src/admin/category.repository';
+import { ArtManagementService } from 'src/admin/artManagement/artManagement.service';
+import { S3Repository } from 'src/Repository/s3.repository';
+import { CategoryRepository } from 'src/Repository/category.repository';
+import { ArtRepository } from 'src/Repository/art.repository';
+import { ArtistRepository } from 'src/Repository/artist.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ArtManagementRepository, ArtistRepository, S3Repository, CategoryRepository]), NestjsFormDataModule
+    TypeOrmModule.forFeature([ArtRepository, ArtistRepository, S3Repository, CategoryRepository]), NestjsFormDataModule
 
   ],
   controllers: [ShopController],

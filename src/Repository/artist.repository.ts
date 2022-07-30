@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
-import { ArtistDto } from "./dto/artist.dto";
-import { Artist } from "./entities/artist.entity";
+import { Artist } from "src/Entity/artist.entity";
+import { ArtistDto } from "src/DTO/artist.dto";
 
 @EntityRepository(Artist)
 export class ArtistRepository extends Repository<Artist> {

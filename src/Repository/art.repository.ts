@@ -1,19 +1,19 @@
 import { EntityRepository, Repository } from "typeorm";
-import { ArtManagementDto } from "./dto/artManagement.dto";
-import { Art } from "./entities/artManagement.entity";
+import { Art } from "src/Entity/art.entity";
+import { ArtDto } from "src/DTO/art.dto";
 
 @EntityRepository(Art)
-export class ArtManagementRepository extends Repository<Art> {
+export class ArtRepository extends Repository<Art> {
 
     // 작품 업로드
-    async uploadArt(artManagementDto: ArtManagementDto, url: string): Promise<Art> {
+    async uploadArt(artDto: ArtDto, url: string): Promise<Art> {
         try {
             console.log('ArtManagementRepository-uploadArt-start');
             const thumbnail = url;
             const viewCount = 0;
             const downloadCount = 0;
             
-        const {title, categoryId, artistId, date, description, downloadUrl}  = artManagementDto;
+        const {title, categoryId, artistId, date, description, downloadUrl}  = artDto;
 
         const art = this.create({
             title,
@@ -38,7 +38,7 @@ export class ArtManagementRepository extends Repository<Art> {
     }
 
     // 작품 수정
-    async updateArt(id: number, newArt: ArtManagementDto): Promise<Art> {
+    async updateArt(id: number, newArt: ArtDto): Promise<Art> {
         const artToUpdate = await this.findOne(id);
         artToUpdate.title = newArt.title;
         artToUpdate.categoryId = newArt.categoryId;

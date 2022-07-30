@@ -1,5 +1,5 @@
 import { IsDate, IsInt, IsString } from "class-validator";
-export class ArtManagementDto {
+export class ArtDto {
 
     @IsString() 
     title: string;

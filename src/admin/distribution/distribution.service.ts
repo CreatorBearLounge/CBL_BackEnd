@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArtistRepository } from '../artist.repository';
-import { ArtManagementRepository } from '../artManagement.repository';
-import { CategoryRepository } from '../category.repository';
+import { ArtRepository } from 'src/Repository/art.repository';
+import { ArtistRepository } from 'src/Repository/artist.repository';
+import { CategoryRepository } from '../../Repository/category.repository';
 
 @Injectable()
 export class DistributionService {
     constructor(
-        @InjectRepository(ArtManagementRepository)
+        @InjectRepository(ArtRepository)
         @InjectRepository(CategoryRepository)
         @InjectRepository(ArtistRepository)
-        private artManagementRepository: ArtManagementRepository,
+        private artRepository: ArtRepository,
         private categoryRepository: CategoryRepository,
         private artistRepository: ArtistRepository,
     ) { }
 
     // 작가 별 분배포인트 계산 (한명)
     async calculateDistribution(id: number): Promise<number> {
-        const list = await this.artManagementRepository.find({
+        const list = await this.artRepository.find({
             where: [
                 { artistId: id }
             ]
