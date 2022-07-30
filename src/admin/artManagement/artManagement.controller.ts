@@ -1,18 +1,18 @@
 import { Controller, Get, Param, Post, Delete, Patch, Body, UploadedFiles, Req, Res, UseInterceptors } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FormDataRequest } from 'nestjs-form-data';
 import { ArtManagementService } from './artManagement.service';
-import { ArtistDto } from './dto/artist.dto';
-import { CategoryDto } from './dto/category.dto';
-import { ArtManagementDto } from './dto/artManagement.dto';
-import { Art } from './entities/artManagement.entity';
-import { Artist } from './entities/artist.entity';
-import { Category } from './entities/category.entity';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as AWS from 'aws-sdk';
 import * as multerS3 from 'multer-s3';
 import 'dotenv/config';
-import { DistributionService } from './distribution/distribution.service';
+import { DistributionService } from '../distribution/distribution.service';
+import { Art } from 'src/Entity/art.entity';
+import { ArtDto } from 'src/DTO/art.dto';
+import { Artist } from 'src/Entity/artist.entity';
+import { ArtistDto } from 'src/DTO/artist.dto';
+import { CategoryDto } from 'src/DTO/category.dto';
+import { Category } from 'src/Entity/category.entity';
 
 const s3 = new AWS.S3();
 AWS.config.update({
@@ -21,6 +21,7 @@ AWS.config.update({
     region: process.env.AWS_REGION
   });
 
+@ApiTags('admin')
 @Controller('admin')
 export class ArtManagementController {
     constructor(
@@ -53,11 +54,11 @@ export class ArtManagementController {
           }
         }),
       }))
-    async uploadArt(@Body() artManagementDto: ArtManagementDto, @UploadedFiles() files: Express.Multer.File[], @Req() request, @Res() response) {
+    async uploadArt(@Body() artDto: ArtDto, @UploadedFiles() files: Express.Multer.File[], @Req() request, @Res() response) {
         console.log('ArtManagementController-uplaodArt-start');
         // const locations = request.files.locations;
         const { location } = request.files[0];
-        const uploadedArt = await this.artManagementService.uploadArt(artManagementDto, files, location);
+        const uploadedArt = await this.artManagementService.uploadArt(artDto, files, location);
         console.log('ArtManagementController-uplaodArt-end');
         // console.log({test});
         response.send(uploadedArt); // 문제 생길 수 있음 
@@ -77,8 +78,8 @@ export class ArtManagementController {
     @ApiOperation({ summary: '개별 작품 수정 API', description: '개별 작품 수정' })
     @ApiCreatedResponse({ description: '개별 작품 수정', type: Art })
     @FormDataRequest()
-    updateArt(@Param('id') id: number, @Body() artManagementDto: ArtManagementDto): Promise<Art> {
-        return this.artManagementService.updateArt(id, artManagementDto);
+    updateArt(@Param('id') id: number, @Body() artDto: ArtDto): Promise<Art> {
+        return this.artManagementService.updateArt(id, artDto);
     }
 
     // 작품 삭제

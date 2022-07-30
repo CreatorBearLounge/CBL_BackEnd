@@ -1,17 +1,17 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArtManagementRepository } from './artManagement.repository';
-import { ArtistRepository } from './artist.repository';
-import { ArtManagementDto } from './dto/artManagement.dto';
-import { Art } from './entities/artManagement.entity';
-import { Artist } from './entities/artist.entity';
-import { ArtistDto } from './dto/artist.dto';
+import { Artist } from 'src/Entity/artist.entity';
+import { ArtistDto } from '../../DTO/artist.dto';
 import * as AWS from 'aws-sdk';
-import { S3Repository } from './s3.repository';
-import { S3 } from './entities/s3.entity';
-import { CategoryRepository } from './category.repository';
-import { CategoryDto } from './dto/category.dto';
-import { Category } from './entities/category.entity';
+import { S3Repository } from '../../Repository/s3.repository';
+import { S3 } from 'src/Entity/s3.entity';
+import { CategoryRepository } from '../../Repository/category.repository';
+import { Category } from 'src/Entity/category.entity';
+import { Art } from 'src/Entity/art.entity';
+import { ArtRepository } from 'src/Repository/art.repository';
+import { ArtistRepository } from 'src/Repository/artist.repository';
+import { ArtDto } from 'src/DTO/art.dto';
+import { CategoryDto } from 'src/DTO/category.dto';
 
 
 
@@ -24,21 +24,26 @@ AWS.config.update({
 @Injectable()
 export class ArtManagementService {
     constructor(
-        @InjectRepository(ArtManagementRepository)
+        @InjectRepository(ArtRepository)
         @InjectRepository(ArtistRepository)
         @InjectRepository(CategoryRepository)
         @InjectRepository(S3Repository)
         
-        private artManagementRepository: ArtManagementRepository,
+        private artRepository: ArtRepository,
         private artistRepository: ArtistRepository,
          private categoryRepository: CategoryRepository,
         private s3Repository: S3Repository,
     ){}
 
+    /*
+    1. getArts: 작품 리스트 조회
+    2. uploadArt: 작품 업로드
+    3. getArtById: 아이디로 작품 찾기 - 작품 상세 조회
+    */
 
     // 작품 리스트 조회
     async getArts(): Promise<Art[]> {
-        return await this.artManagementRepository.find();
+        return await this.artRepository.find();
     }
 
     // 작품 업로드
@@ -48,7 +53,7 @@ export class ArtManagementService {
      * @Author 현빈짱
      * @Return art
      */
-    async uploadArt(artManagementDto: ArtManagementDto, files: Express.Multer.File[], location: string): Promise<Art> {
+    async uploadArt(artDto: ArtDto, files: Express.Multer.File[], location: string): Promise<Art> {
         console.log('ArtManagementService-uploadArt-start');
         try{
             const uploadFiles = [];
@@ -63,7 +68,7 @@ export class ArtManagementService {
         const url = (location);
         console.log({url});
         
-        return this.artManagementRepository.uploadArt(artManagementDto, url);
+        return this.artRepository.uploadArt(artDto, url);
         }
         catch(error) {
         throw new BadRequestException(error.message);
@@ -75,9 +80,8 @@ export class ArtManagementService {
     // 개별 작품 조회
     async getArtById(id: number): Promise<Art> {
 
-        this.artManagementRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
-
-        const found = await this.artManagementRepository.findOne(id);
+        this.artRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
+        const found = await this.artRepository.findOne(id);
 
         if (!found) {
             throw new NotFoundException(`Cant't find art with id ${id}`);
@@ -87,13 +91,13 @@ export class ArtManagementService {
     }
 
     // 작품 수정
-    async updateArt(id: number, newArt: ArtManagementDto): Promise<Art> {
-        return this.artManagementRepository.updateArt(id, newArt);
+    async updateArt(id: number, newArt: ArtDto): Promise<Art> {
+        return this.artRepository.updateArt(id, newArt);
     }
 
     // 작품 삭제
     async deleteArt(id: number): Promise<void> {
-        const result = await this.artManagementRepository.delete(id);
+        const result = await this.artRepository.delete(id);
         console.log(result);
     }
 
@@ -136,18 +140,15 @@ export class ArtManagementService {
     // 작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)
     async getArtDetail(id: number): Promise<any> {
 
-        this.artManagementRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
+        this.artRepository.viewCount(id); // 개별 작품 조회시 마다 조회수 1 증가
 
-        const art = await this.artManagementRepository.findOne(id); // 작품
-
+        const art = await this.artRepository.findOne(id); // 작품
         if (!art) {
             throw new NotFoundException(`Cant't find art with id ${id}`);
         }
 
-
         const artist = await this.artistRepository.findOne(art.artistId); // 작가
-
-        let artistsArts = await this.artManagementRepository.find({ // 작가의 전체 작품
+        let artistsArts = await this.artRepository.find({ // 작가의 전체 작품
             where: [
                 { artistId: art.artistId }
             ]
