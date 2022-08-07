@@ -4,7 +4,6 @@ import 'dotenv/config';
 export const typeORMConfig : TypeOrmModuleOptions = {
     type: 'postgres',
     host: process.env.DB_HOST,
-    // host: 'cbl.csnv6qgbbdm9.ap-northeast-2.rds.amazonaws.com',
     port: 5432,
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
