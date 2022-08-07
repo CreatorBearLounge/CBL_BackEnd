@@ -1,5 +1,5 @@
-import { FileSystemStoredFile } from "nestjs-form-data";
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Download } from "src/Entity/download.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("Art")
 export class Art extends BaseEntity{
@@ -26,15 +26,14 @@ export class Art extends BaseEntity{
 
     @Column({ nullable: true })
     downloadCount: number;
-    
-    @Column("int", { nullable: true, array: true })
-    downloadUserId: number[];
 
-    // @Column({type: 'bytea', nullable: true})
-    // thumbnail: FileSystemStoredFile;
     @Column({ nullable: true })
     thumbnail: string;
 
     @Column({ nullable: true })
     downloadUrl: string;
+
+    // 다운로드
+    @OneToMany(type =>Download, download => download.art, {eager: false})
+    download: Download[];
 }
