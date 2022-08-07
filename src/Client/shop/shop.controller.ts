@@ -1,8 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { Art } from 'src/Entity/art.entity';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ArtManagementService } from 'src/admin/artManagement/artManagement.service';
 
 @ApiTags('shop')
 @Controller('shop')
@@ -35,10 +34,18 @@ export class ShopController {
     return this.shopService.getArtById(id);
   }
 
+  // 작품 다운로드
+  @Post('/arts/:id')
+  @ApiOperation({ summary: '작품 다운로드 API', description: '작품 다운로드' })
+  @ApiCreatedResponse({ description: '개별 작품 조회', type: Art })
+  downloadArt(@Param('id') id: number, @Body('addressId') addressId: string): Promise<Art> {
+    return this.shopService.downloadArt(id, addressId);
+  }
+
   // 작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)
   @Get('/arts/detail/:id')
-  @ApiOperation({ summary: '작품 상세 조회 API', description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)' })
-  @ApiCreatedResponse({ description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 작품)' })
+  @ApiOperation({ summary: '작품 상세 조회 API', description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 다른 작품들)' })
+  @ApiCreatedResponse({ description: '작품 상세 조회 (작품 내용 + 작가 프로필 + 작가의 다른 작품들)' })
   getArtDetail(@Param('id') id: number): Promise<any> {
     return this.shopService.getArtDetail(id);
   }
